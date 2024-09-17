@@ -1,0 +1,18 @@
+class AxxTutorialSSRSReportController  extends SrsReportRunController
+
+{
+    public static AxxTutorialSSRSReportController construct()
+    {
+        return new AxxTutorialSSRSReportController();
+    }
+
+    public static void main(Args _args)
+    {
+        AxxTutorialSSRSReportController controller = AxxTutorialSSRSReportController::construct();
+
+        controller.parmArgs(_args);
+        controller.parmReportName(ssrsReportStr(AxxTutorialSSRSReport, Report));
+        controller.startOperation();
+    }
+
+}
