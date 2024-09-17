@@ -1,0 +1,7 @@
+SSRS Functions
+
+En cada fila ir sumando el InvoiceAmount
+=RunningValue(Fields!InvoiceAmount.Value, SUM, "CustInvoiceJour")
+
+Obtener el último valor de una fila en un datasource
+=Last(ReportItems!RunningTotalMine.Value)
