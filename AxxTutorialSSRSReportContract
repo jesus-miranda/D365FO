@@ -1,0 +1,21 @@
+[DataContractAttribute]
+class AxxTutorialSSRSReportContract
+{
+    TransDate startDate; 
+    TransDate endDate;
+
+    [DataMemberAttribute('StartDate')]
+    public TransDate parmStartDate(TransDate _startDate = startDate)
+    {
+        startDate = _startDate;
+        return startDate;
+    }
+
+    [DataMemberAttribute('EndDate')]
+    public TransDate parmEndDate(TransDate _endDate = endDate)
+    {
+        endDate = _endDate;
+        return endDate;
+    }
+
+}
