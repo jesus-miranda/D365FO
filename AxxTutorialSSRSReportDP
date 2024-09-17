@@ -1,0 +1,38 @@
+[SRSReportParameterAttribute(classStr(AxxTutorialSSRSReportContract))]
+class AxxTutorialSSRSReportDP extends SRSReportDataProviderBase
+
+{
+    AxxTutorialSSRSReportTmp reportTmp;
+
+    [SRSReportDataSetAttribute(tableStr(AxxTutorialSSRSReportTmp))]
+    public AxxTutorialSSRSReportTmp getTmp()
+    {
+        select reportTmp;
+        return reportTmp;
+    }
+
+    public void processReport()
+    {
+        AxxTutorialSSRSReportContract contract = this.parmDataContract() as AxxTutorialSSRSReportContract;
+
+        CustInvoiceJour         custInvoiceJour;
+        TransDate     startDate = contract.parmStartDate();
+        TransDate     endDate = contract.parmEndDate();
+        
+        while 
+            select InvoiceAccount, InvoiceAmount, InvoiceDate, InvoicingName, InvoiceId
+            from custInvoiceJour
+            where custInvoiceJour.InvoiceDate >= endDate &&
+                    custInvoiceJour.InvoiceDate <= startDate
+        {
+            reportTmp.clear();
+            reportTmp.InvoiceAccount    = custInvoiceJour.InvoiceAccount;
+            reportTmp.InvoiceAmount     = custInvoiceJour.InvoiceAmount;
+            reportTmp.InvoiceDate       = custInvoiceJour.InvoiceDate;
+            reportTmp.InvoicingName     = custInvoiceJour.InvoicingName;
+            reportTmp.InvoiceId         = custInvoiceJour.InvoiceId;
+            reportTmp.insert();
+        }
+    }
+
+}
