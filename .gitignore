@@ -1,0 +1,17 @@
+.vs/
+**/.vs/
+**/bin/
+Metadata/**/Dynamics.AX.*.dll
+Metadata/**/Reports/
+**/*Result.*
+**/*.zip
+**/XppMetadata/
+**/Resources/
+**/CompileLabels.xml
+**/BPCheck.xml
+**/*.xref
+
+**/Debug/
+**/Release/
+**/*.cache
+Projects/**/obj/
