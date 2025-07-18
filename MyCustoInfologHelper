@@ -1,0 +1,133 @@
+class MyCustoInfologHelper
+{
+    static boolean existMessage(str _message)
+    {
+        int infologLineNum = infologLine();
+        int i;
+        for (i = 1; i <= infologLineNum; i++)
+        {
+            str msg = infolog().text(i);
+            if (strContains(msg,_message))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static void removalByMessage(str _message)
+    {
+        InfologData _infologData = infolog().infologData();
+        
+        infolog().clear();
+
+        SysInfologEnumerator sysInfologEnumerator = SysInfologEnumerator::newData(_infologData);
+        while (sysInfologEnumerator.moveNext())
+        {
+            if (strContains(sysInfologEnumerator.currentMessage(), _message))
+            {
+                continue;
+            }
+
+            AxxInfologHelper::add(sysInfologEnumerator);
+        }
+    }
+
+    static void removalAfterLineNum(int _logLineNumber)
+    {
+        InfologData _infologData = infolog().infologData();
+        if (_logLineNumber == conLen(_infologData))
+        {
+            return;
+        }
+
+        infolog().clear();
+
+        SysInfologEnumerator sysInfologEnumerator = SysInfologEnumerator::newData(_infologData);
+        int infologDataIndex;
+        while (sysInfologEnumerator.moveNext())
+        {
+            infologDataIndex++;
+            if (infologDataIndex > _logLineNumber)
+            {
+                break;
+            }
+
+            AxxInfologHelper::add(sysInfologEnumerator);
+        }
+    }
+
+    static void removalBeforeLineNum(int _logLineNumber)
+    {
+        InfologData _infologData = infolog().infologData();
+        if (_logLineNumber == conLen(_infologData))
+        {
+            return;
+        }
+
+        infolog().clear();
+
+        SysInfologEnumerator sysInfologEnumerator = SysInfologEnumerator::newData(_infologData);
+        int infologDataIndex;
+        while (sysInfologEnumerator.moveNext())
+        {
+            infologDataIndex++;
+            if (infologDataIndex < _logLineNumber)
+            {
+                continue;
+            }
+
+            AxxInfologHelper::add(sysInfologEnumerator);
+        }
+    }
+
+    static void removalLineNum(int _logLineNumber)
+    {
+        InfologData _infologData = infolog().infologData();
+        if (_logLineNumber == conLen(_infologData))
+        {
+            return;
+        }
+
+        infolog().clear();
+
+        SysInfologEnumerator sysInfologEnumerator = SysInfologEnumerator::newData(_infologData);
+        int infologDataIndex;
+        while (sysInfologEnumerator.moveNext())
+        {
+            infologDataIndex++;
+            if (infologDataIndex == _logLineNumber)
+            {
+                continue;
+            }
+
+            AxxInfologHelper::add(sysInfologEnumerator);
+        }
+    }
+
+    private static void add(sysInfologEnumerator sysInfologEnumerator)
+    {
+        SysInfoLogStr currentInfologMessage = sysInfologEnumerator.currentMessage();
+        Exception currentInfologMessageType = sysInfologEnumerator.currentException();
+        
+        //Al usar Message.add() anidando los tabs (setPrefix) de la colección de mensajes en el tab del último setPrefix
+        //switch (currentInfologMessageType)
+        //{
+        //    case Exception::Error:
+        //        Message::Add(MessageSeverity::Error, currentInfologMessage);
+        //        break;
+
+        //    case Exception::Warning:
+        //        Message::Add(MessageSeverity::Warning, currentInfologMessage);
+        //        break;
+
+        //    case Exception::Info:
+        //        Message::Add(MessageSeverity::Informational, currentInfologMessage);
+        //        break;
+        //}
+
+        //Se reemplaza Message:add por infolog().add() pasando como false el parámetro "buildprefix"
+        infolog().add(currentInfologMessageType, currentInfologMessage, "", null, false);
+    }
+
+}
